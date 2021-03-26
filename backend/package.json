@@ -1,0 +1,19 @@
+{
+  "name": "happy-back",
+  "version": "1.0.0",
+  "description": "backend do projeto Happy NLW#3",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon ./src/server.js"
+  },
+  "author": "Gustavo Castanho Duarte",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.7",
+    "typescript": "^4.2.2"
+  }
+}

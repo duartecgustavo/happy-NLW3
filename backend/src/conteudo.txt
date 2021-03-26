@@ -1,0 +1,31 @@
+Rota : Conjunto
+Recurso: Usuarios
+Método HTTP = GET, POST, PUT e DELETE
+Parametros = query params | route params | body
+
+query params: http://localhost:3333/users?search=diego
+route params: http://localhost:3333/1
+body: http://localhost:3333 
+
+app.post('/users/:id', (request, response) => {
+    console.log(request.query)
+    console.log(request.params)
+    console.log(request.body)
+    return response.json({message: 'Hello World'});
+})
+
+app.get('/users', (request, response) => {
+    return response.json({message: 'Hello World'});
+})
+
+
+consultando orphanages BD
+app.get("/users", (request, response) => {
+    connection.query("SELECT * FROM orphanages", (error, result)=>{
+        if(error){
+            response.send(error)
+            res.send(./error.html)
+        } else {  
+            response.send(result)
+    }})
+})
