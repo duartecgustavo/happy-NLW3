@@ -19,6 +19,8 @@ const mapIcon = Leaflet.icon({
 })
 
 function OrphanagesMap() {
+
+    
     const [orphanages, setOrphanages] = useState([]);
     console.log(orphanages);
     useEffect(() => {

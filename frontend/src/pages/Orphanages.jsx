@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FiClock, FiInfo } from "react-icons/fi";
 import { Marker, TileLayer, MapContainer } from "react-leaflet";
 import Leaflet from 'leaflet';
-import axios from 'axios';
-
+import { useParams } from 'react-router-dom'
 
 import mapMarkerImg from '../images/map-marker.svg'
 
@@ -24,17 +23,25 @@ const happyMapIcon = Leaflet.icon({
 })
 
 export default function Orphanage() {
-  const [orphanages, setOrphanages] = useState([]);
-  console.log(orphanages);
+
+  const { id } = useParams();
+
+  const [orphanage, setOrphanage] = useState([]);
+
+
+  console.log(orphanage);
+  console.log(id);
+
+
   useEffect(() => {
-    async function showOrphanages() {
-      const response = await api.get('http://localhost:3333/orphanages')
+    async function showOrphanage() {
+      const response = await api.get(`http://localhost:3333/orphanages/${id}`)
 
-      // console.log(response.data);
+      console.log(response.data);
 
-      setOrphanages(response.data);
+      setOrphanage(response.data);
     }
-    showOrphanages();
+    showOrphanage();
   }, []);
 
   return (
@@ -89,7 +96,7 @@ export default function Orphanage() {
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
-                {orphanages.map(orph => {
+                {orphanage.map(orph => {
                   return (
 
                     <Marker key={orph.id} interactive={false} icon={happyMapIcon} position={[orph.latitude, orph.longitude]} />
