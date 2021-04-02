@@ -27,19 +27,25 @@ export default function Orphanage() {
   const { id } = useParams();
 
   const [orphanage, setOrphanage] = useState([]);
-
-
-  console.log(orphanage);
-  console.log(id);
-
+  const [name, setName] = useState([]);
+  const [latitude, setLatitude] = useState([]);
+  const [longitude, setLongitude] = useState([]);
+  const [about, setAbout] = useState([]);
+  const [open_on_weekend, setOpen_on_weekend] = useState([]);
+  const [opening_hour, setOpening_hour] = useState([]);
 
   useEffect(() => {
     async function showOrphanage() {
       const response = await api.get(`http://localhost:3333/orphanages/${id}`)
-
-      console.log(response.data);
+      // console.log(response.data);
 
       setOrphanage(response.data);
+      setName(response.data[0].name)
+      setLatitude(response.data[0].latitude)
+      setLongitude(response.data[0].longitude)
+      setAbout(response.data[0].about)
+      setOpen_on_weekend(response.data[0].open_on_weekend)
+      setOpening_hour(response.data[0].opening_hour)
     }
     showOrphanage();
   }, []);
@@ -74,40 +80,31 @@ export default function Orphanage() {
           </div>
 
           <div className="orphanage-details-content">
-            <h1>Lar das meninas</h1>
-            <p>Presta assistência a crianças de 06 a 15 anos que se encontre em situação de risco e/ou vulnerabilidade social.</p>
-
-            {/* Teste Map */}
-            {/* {orphanages.map((orph) => (
-              <div key={orph.id}>
-                <h1>{orph.latitude}</h1>
-              </div>
-            ))} */}
+            <h1>{name}</h1>
+            <h1>{latitude}</h1>
+            <h1>{longitude}</h1>
+            <p>{about}</p>
 
             <div className="map-container">
-              <MapContainer
-                interactive={false}
-                center={[-27.2092052, -49.6401092]}
-                zoom={16}
-                style={{ width: '100%', height: 280 }}
-              >
-                <TileLayer
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-
-                {orphanage.map(orph => {
-                  return (
+              {orphanage.map(orph => {
+                return (
+                  <MapContainer
+                    interactive={false}
+                    center={[orph.latitude, orph.longitude]}
+                    zoom={16}
+                    style={{ width: '100%', height: 280 }}
+                  >
+                    <TileLayer
+                      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
 
                     <Marker key={orph.id} interactive={false} icon={happyMapIcon} position={[orph.latitude, orph.longitude]} />
-
-                  )
-                })}
-
-              </MapContainer>
-
+                  </MapContainer>
+                )
+              })}
               <footer>
-                <a href="">Ver rotas no Google Maps</a>
+                <a target="_blanck" rel="noopener noreferrer" href={`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`}>Ver rotas no Google Maps</a>
               </footer>
             </div>
 
@@ -120,13 +117,22 @@ export default function Orphanage() {
               <div className="hour">
                 <FiClock size={32} color="#15B6D6" />
                 Segunda à Sexta <br />
-                8h às 18h
+                {opening_hour}
               </div>
-              <div className="open-on-weekends">
-                <FiInfo size={32} color="#39CC83" />
-                Atendemos <br />
-                fim de semana
+
+              {
+                open_on_weekend == "true" ? (
+                  <div className="open-on-weekends">
+                    <FiInfo size={32} color="#39CC83" />
+                Atendemos de finais de semana
+                  </div>
+                ) : (
+                  <div className="open-on-weekends dont-open">
+                <FiInfo size={32} color="#FF669D" />
+                Não atendemos de finais de semana
               </div>
+                )
+              }
             </div>
 
             {/* <PrimaryButton type="button">

@@ -42,6 +42,7 @@
   flex: 1;
 }
 
+
 form.create-orphanage-form {
   width: 700px;
   margin: 64px auto;
@@ -53,6 +54,10 @@ form.create-orphanage-form {
   padding: 64px 80px;
 
   overflow: hidden;
+}
+
+form.create-orphanage-form .leaftlet-container {
+  border-radius: 20px !important;
 }
 
 form.create-orphanage-form fieldset {
@@ -74,10 +79,6 @@ form.create-orphanage-form fieldset legend {
   border-bottom: 1px solid #D3E2E5;
   margin-bottom: 40px;
   padding-bottom: 24px;
-}
-
-form.create-orphanage-form .input-block {
-
 }
 
 form.create-orphanage-form .input-block + .input-block {

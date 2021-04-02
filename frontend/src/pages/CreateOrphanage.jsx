@@ -1,6 +1,7 @@
 import React from "react";
 import { TileLayer, Marker, MapContainer } from 'react-leaflet';
-import Leaflet from 'leaflet';
+import Leaflet, { latLng, LatLng } from 'leaflet';
+import { LeafletMouseEvent } from 'leaflet';
 
 // import PrimaryButton from "../../components/PrimaryButton";
 import Sidebar from "./components/sideBar/Sidebar";
@@ -14,37 +15,66 @@ export default function createOrphanages() {
 
   const happyMapIcon = Leaflet.icon({
     iconUrl: mapMarkerImg,
-  
+
     iconSize: [58, 68],
     iconAnchor: [29, 68],
     popupAnchor: [0, -60]
   })
+
+
+  function capturarLat () {
+    const capturandoLat = document.getElementById('latitude').value;
+    console.log(capturandoLat)
+}
+//   function capturarLgn () {
+//     const capturandoLgn = document.getElementById('longitude').value;
+//     console.log(capturandoLgn)
+// }
+
   return (
     <div id="page-create-orphanage">
       <Sidebar />
 
       <main>
-        <form className="create-orphanage-form">
+        <form className="create-orphanage-form" style={{ borderRadius: "20px" }}>
           <fieldset>
             <legend>Dados</legend>
 
             <MapContainer
               center={[-23.5077632, -46.2979072]}
-              style={{ width: "100%", height: 280 }}
+              style={{
+                width: "100%",
+                height: 280,
+                borderRadius: "20px",
+                marginBottom: "40px",
+                border: "1px solid #D3E2E5"
+              }}
               zoom={15}
-              // onClick={handleMapClick}
             >
-                <TileLayer
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
 
-                <Marker
-                  interactive={false}
-                  icon={happyMapIcon}
-                  position={[-27.2092052, -49.6401092]}
-                />
+              <Marker
+                interactive={false}
+                icon={happyMapIcon}
+                position={[-27.2092052, -49.6401092]}
+              />
             </MapContainer>
+
+            <div style={{display:"flex", justifyContent:"space-around", alignItems:"center", marginBottom:"20px"}}>
+              <div className="input-block" style={{ width: "49%", marginTop:"0" }}>
+                <label htmlFor="latitude">Latitude</label>
+                <input id="latitude" onClick={capturarLat()} />
+              </div>
+
+              <div className="input-block" style={{ width: "49%", marginTop:"0" }}>
+                <label htmlFor="longitude">Longitude</label>
+                {/* <input id="longitude" onClick={capturarLgn()} /> */}
+                <input id="longitude" />
+              </div>
+            </div>
 
             <div className="input-block">
               <label htmlFor="name">Nome</label>
