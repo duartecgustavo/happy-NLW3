@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import { TileLayer, Marker, MapContainer } from 'react-leaflet';
-import Leaflet, { latLng, LatLng } from 'leaflet';
-import { LeafletMouseEvent } from 'leaflet';
+import Leaflet from 'leaflet';
 
 // import PrimaryButton from "../../components/PrimaryButton";
 import Sidebar from "./components/sideBar/Sidebar";
@@ -11,7 +10,36 @@ import { FiPlus } from "react-icons/fi";
 import mapMarkerImg from '../images/map-marker.svg'
 import '../styles/pages/orphanages.css';
 
-export default function createOrphanages() {
+
+export default function CreateOrphanages() {
+
+  const [name, setName] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [about, setAbout] = useState('');
+  const [instructions, setInstructions] = useState('');
+  const [open_on_weekend, setOpen_on_weekend] = useState(true);
+  const [opening_hour, setOpening_hours] = useState('');
+
+  const itensForm = [];
+  function handleSubmit(event) {
+    event.preventDefault();
+    itensForm.pop()
+    itensForm.push(
+      {
+        "name":`${name}`,
+        "latitude": latitude,
+        "longitude": longitude,
+        "about": about,
+        "instructions": instructions,
+        "open_on_weekend": open_on_weekend,
+        "opening_hour": opening_hour
+      }
+    
+    );
+    console.log(itensForm);
+
+  }
 
   const happyMapIcon = Leaflet.icon({
     iconUrl: mapMarkerImg,
@@ -21,22 +49,12 @@ export default function createOrphanages() {
     popupAnchor: [0, -60]
   })
 
-
-  function capturarLat () {
-    const capturandoLat = document.getElementById('latitude').value;
-    console.log(capturandoLat)
-}
-//   function capturarLgn () {
-//     const capturandoLgn = document.getElementById('longitude').value;
-//     console.log(capturandoLgn)
-// }
-
   return (
     <div id="page-create-orphanage">
       <Sidebar />
 
       <main>
-        <form className="create-orphanage-form" style={{ borderRadius: "20px" }}>
+        <form onSubmit={handleSubmit} className="create-orphanage-form" style={{ borderRadius: "20px" }}>
           <fieldset>
             <legend>Dados</legend>
 
@@ -63,39 +81,34 @@ export default function createOrphanages() {
               />
             </MapContainer>
 
-            <div style={{display:"flex", justifyContent:"space-around", alignItems:"center", marginBottom:"20px"}}>
-              <div className="input-block" style={{ width: "49%", marginTop:"0" }}>
+            <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", marginBottom: "20px" }}>
+              <div className="input-block" style={{ width: "49%", marginTop: "0" }}>
                 <label htmlFor="latitude">Latitude</label>
-                <input id="latitude" onClick={capturarLat()} />
+                <input id="latitude"
+                  onChange={event => setLatitude(event.target.value)}
+                />
               </div>
 
-              <div className="input-block" style={{ width: "49%", marginTop:"0" }}>
+              <div className="input-block" style={{ width: "49%", marginTop: "0" }}>
                 <label htmlFor="longitude">Longitude</label>
-                {/* <input id="longitude" onClick={capturarLgn()} /> */}
-                <input id="longitude" />
+                <input id="longitude"
+                  onChange={event => setLongitude(event.target.value)}
+                />
               </div>
             </div>
 
             <div className="input-block">
               <label htmlFor="name">Nome</label>
-              <input id="name" />
+              <input id="name"
+                value={name}
+                onChange={event => setName(event.target.value)} />
             </div>
 
             <div className="input-block">
               <label htmlFor="about">Sobre <span>Máximo de 300 caracteres</span></label>
-              <textarea id="name" maxLength={300} />
-            </div>
-
-            <div className="input-block">
-              <label htmlFor="images">Fotos</label>
-
-              <div className="uploaded-image">
-
-              </div>
-
-              <button className="new-image">
-                <FiPlus size={24} color="#15b6d6" />
-              </button>
+              <textarea id="about" maxLength={300}
+                onChange={event => setAbout(event.target.value)}
+              />
             </div>
           </fieldset>
 
@@ -104,25 +117,36 @@ export default function createOrphanages() {
 
             <div className="input-block">
               <label htmlFor="instructions">Instruções</label>
-              <textarea id="instructions" />
+              <textarea id="instructions"
+                onChange={event => setInstructions(event.target.value)}
+              />
             </div>
 
             <div className="input-block">
-              <label htmlFor="opening_hours">Nome</label>
-              <input id="opening_hours" />
+              <label htmlFor="opening_hours">Horários de atendimento</label>
+              <input id="opening_hours"
+                onChange={event => setOpening_hours(event.target.value)}
+              />
             </div>
 
             <div className="input-block">
               <label htmlFor="open_on_weekends">Atende fim de semana</label>
 
               <div className="button-select">
-                <button type="button" className="active">Sim</button>
-                <button type="button">Não</button>
+                <button type="button"
+                  className={open_on_weekend ? 'active' : ''}
+                  onClick={() => setOpen_on_weekend(true)}>Sim</button>
+
+                <button type="button"
+                  className={!open_on_weekend ? 'active' : ''}
+                  onClick={() => setOpen_on_weekend(false)}>Não</button>
               </div>
             </div>
           </fieldset>
 
-          {/* <PrimaryButton type="submit">Confirmar</PrimaryButton> */}
+          <button className='confirm-button' type='submit'>
+            Confirmar
+          </button>
         </form>
       </main>
     </div>
