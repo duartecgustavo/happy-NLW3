@@ -10,8 +10,11 @@ import { FiPlus } from "react-icons/fi";
 import mapMarkerImg from '../images/map-marker.svg'
 import '../styles/pages/orphanages.css';
 
+import { useHistory } from 'react-router-dom';
 
 export default function CreateOrphanages() {
+
+  const history = useHistory();
 
   const [name, setName] = useState('');
   const [latitude, setLatitude] = useState('');
@@ -21,25 +24,45 @@ export default function CreateOrphanages() {
   const [open_on_weekend, setOpen_on_weekend] = useState(true);
   const [opening_hour, setOpening_hours] = useState('');
 
-  const itensForm = [];
   function handleSubmit(event) {
     event.preventDefault();
-    itensForm.pop()
-    itensForm.push(
-      {
-        "name":`${name}`,
-        "latitude": latitude,
-        "longitude": longitude,
-        "about": about,
-        "instructions": instructions,
-        "open_on_weekend": open_on_weekend,
-        "opening_hour": opening_hour
-      }
-    
-    );
-    console.log(itensForm);
 
+    let form = {
+      name: name,
+      latitude: latitude,
+      longitude: longitude,
+      about: about,
+      instruction: instructions,
+      open_on_weekend: open_on_weekend,
+      opening_hour: opening_hour
+    };
+    console.log(form);
+    const url = "http://localhost:3333/orphanages";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(form)
+    }).then((res) => {
+      if (res.ok) {
+        setName('');
+        setLatitude('');
+        setLongitude('');
+        setAbout('');
+        setInstructions('');
+        setOpen_on_weekend('');
+        setOpening_hours('');
+        alert('Obrigado pelo contato! Aguarde nosso retorno')
+      } else {
+        alert('Ocorreu um erro ao enviar a mensagem!')
+
+        history.push('/orphanage')
+      }
+    })
   }
+
+
 
   const happyMapIcon = Leaflet.icon({
     iconUrl: mapMarkerImg,
@@ -121,7 +144,7 @@ export default function CreateOrphanages() {
                 onChange={event => setInstructions(event.target.value)}
               />
             </div>
-
+            {/* <p style={{color:"black"}}>{instructions}</p> */}
             <div className="input-block">
               <label htmlFor="opening_hours">Horários de atendimento</label>
               <input id="opening_hours"
